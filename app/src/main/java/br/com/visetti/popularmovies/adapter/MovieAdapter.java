@@ -18,7 +18,6 @@ import br.com.visetti.popularmovies.R;
 import br.com.visetti.popularmovies.model.Movie;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-    private final static String TAG = MovieAdapter.class.getSimpleName();
     private List<Movie> movieList;
 
     public void setMovieList(List<Movie> movieList) {
@@ -49,7 +48,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
         private ImageView mMoviePoster;
-        private TextView mMovieTitle;
 
         public MovieAdapterViewHolder(View itemView) {
             super(itemView);
