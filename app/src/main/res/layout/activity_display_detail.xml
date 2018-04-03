@@ -28,10 +28,11 @@
                     android:id="@+id/tv_detail_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="15dp"
+                    android:gravity="center"
+                    android:paddingTop="20dp"
                     android:textSize="28sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textAlignment="center"/>
 
             </LinearLayout>
 

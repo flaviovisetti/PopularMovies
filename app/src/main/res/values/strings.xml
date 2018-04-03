@@ -3,6 +3,8 @@
     <string name="action_popular">Most Popular</string>
     <string name="action_rated">Top Rated</string>
 
+    <string name="error_message">An error occurred while fetching data. Please try again!</string>
+
     <string name="display_overview">Overview:</string>
     <string name="display_release_date">Release date:</string>
     <string name="display_user_rating">User rating:</string>

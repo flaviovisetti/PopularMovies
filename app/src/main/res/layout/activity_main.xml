@@ -11,6 +11,16 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/tv_error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/error_message"
+        android:visibility="invisible"
+        android:textSize="24sp"
+        android:gravity="center_vertical"
+        android:textAlignment="center"/>
+
     <ProgressBar
         android:id="@+id/pb_progress_display"
         android:layout_width="42dp"

@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.json.JSONException;
 
@@ -26,12 +26,13 @@ import okhttp3.Request;
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
     private final String mostPopularOption = "popular";
     private final String topRatedOption = "top_rated";
+    private final String nowPlaying = "now_playing";
 
 
     private RecyclerView mMovieDisplay;
     private MovieAdapter movieAdapter;
-    private Toast mToast;
     private ProgressBar mProgressDisplay;
+    private TextView mErrorDisplay;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mMovieDisplay = (RecyclerView) findViewById(R.id.rv_movie_display);
         mProgressDisplay = (ProgressBar) findViewById(R.id.pb_progress_display);
+        mErrorDisplay = (TextView) findViewById(R.id.tv_error_message);
 
         GridLayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 4);
         mMovieDisplay.setLayoutManager(layoutManager);
@@ -48,13 +50,23 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         movieAdapter = new MovieAdapter(this);
         mMovieDisplay.setAdapter(movieAdapter);
 
-        showMoviesResults(mostPopularOption);
+        getResultFromNetwork(nowPlaying);
 
     }
 
-    private void showMoviesResults(String queryOption) {
+    private void getResultFromNetwork(String queryOption) {
         Request movieRequest = NetworkUtils.buildMovieUrl(queryOption);
         new MovieTask().execute(movieRequest);
+    }
+
+    private void showErrorDisplay() {
+        mMovieDisplay.setVisibility(View.INVISIBLE);
+        mErrorDisplay.setVisibility(View.VISIBLE);
+    }
+
+    private void showDataDisplay() {
+        mMovieDisplay.setVisibility(View.VISIBLE);
+        mErrorDisplay.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -85,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 movieResults = NetworkUtils.getNetworkResponse(url);
 
             } catch (IOException ex) {
+                showErrorDisplay();
                 ex.printStackTrace();
             }
 
@@ -97,8 +110,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             mProgressDisplay.setVisibility(View.INVISIBLE);
             if (movieData != null) {
                 try {
+                    showDataDisplay();
                     movieAdapter.setMovieList(JsonUtils.parseMovieJSON(movieData));
                 } catch (JSONException ex) {
+                    showErrorDisplay();
                     ex.printStackTrace();
                 }
 
@@ -120,25 +135,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             case R.id.action_popular :
                 movieAdapter = new MovieAdapter(this);
                 mMovieDisplay.setAdapter(movieAdapter);
-                showMoviesResults(mostPopularOption);
+                getResultFromNetwork(mostPopularOption);
                 return true;
 
             case R.id.action_top_rated :
                 movieAdapter = new MovieAdapter(this);
                 mMovieDisplay.setAdapter(movieAdapter);
-                showMoviesResults(topRatedOption);
+                getResultFromNetwork(topRatedOption);
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void sendMessage(String message) {
-        if (mToast != null) {
-            mToast.cancel();
-        }
-
-        mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        mToast.show();
     }
 }
