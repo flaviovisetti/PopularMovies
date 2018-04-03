@@ -1,5 +1,6 @@
 package br.com.visetti.popularmovies;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,11 +18,12 @@ import org.json.JSONException;
 import java.io.IOException;
 
 import br.com.visetti.popularmovies.adapter.MovieAdapter;
+import br.com.visetti.popularmovies.model.Movie;
 import br.com.visetti.popularmovies.utils.JsonUtils;
 import br.com.visetti.popularmovies.utils.NetworkUtils;
 import okhttp3.Request;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
     private final String mostPopularOption = "popular";
     private final String topRatedOption = "top_rated";
 
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mMovieDisplay.setLayoutManager(layoutManager);
         mMovieDisplay.setHasFixedSize(true);
 
-        movieAdapter = new MovieAdapter();
+        movieAdapter = new MovieAdapter(this);
         mMovieDisplay.setAdapter(movieAdapter);
 
         showMoviesResults(mostPopularOption);
@@ -53,6 +55,17 @@ public class MainActivity extends AppCompatActivity {
     private void showMoviesResults(String queryOption) {
         Request movieRequest = NetworkUtils.buildMovieUrl(queryOption);
         new MovieTask().execute(movieRequest);
+    }
+
+    @Override
+    public void onClick(Movie itemMovie) {
+        Bundle bundle = new Bundle();
+        Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
+
+        bundle.putSerializable("movie", itemMovie);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
     }
 
     public class MovieTask extends AsyncTask<Request, Void, String> {
@@ -105,13 +118,13 @@ public class MainActivity extends AppCompatActivity {
 
         switch (menuId) {
             case R.id.action_popular :
-                movieAdapter = new MovieAdapter();
+                movieAdapter = new MovieAdapter(this);
                 mMovieDisplay.setAdapter(movieAdapter);
                 showMoviesResults(mostPopularOption);
                 return true;
 
             case R.id.action_top_rated :
-                movieAdapter = new MovieAdapter();
+                movieAdapter = new MovieAdapter(this);
                 mMovieDisplay.setAdapter(movieAdapter);
                 showMoviesResults(topRatedOption);
                 return true;

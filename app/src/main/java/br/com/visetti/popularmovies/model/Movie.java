@@ -1,6 +1,8 @@
 package br.com.visetti.popularmovies.model;
 
-public class Movie {
+import java.io.Serializable;
+
+public class Movie implements Serializable {
     private long id;
     private String title;
     private String posterPath;

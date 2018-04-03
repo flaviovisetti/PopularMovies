@@ -19,10 +19,19 @@ import br.com.visetti.popularmovies.model.Movie;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
     private List<Movie> movieList;
+    private MovieAdapterOnClickHandler onClickHandler;
+
+    public interface MovieAdapterOnClickHandler {
+        void onClick(Movie itemMovie);
+    }
 
     public void setMovieList(List<Movie> movieList) {
         this.movieList = movieList;
         notifyDataSetChanged();
+    }
+
+    public MovieAdapter(MovieAdapterOnClickHandler onClickHandler) {
+        this.onClickHandler = onClickHandler;
     }
 
     @Override
@@ -46,13 +55,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         return movieList.size();
     }
 
-    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mMoviePoster;
 
         public MovieAdapterViewHolder(View itemView) {
             super(itemView);
             mMoviePoster = (ImageView) itemView.findViewById(R.id.iv_poster);
+            itemView.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View view) {
+            int postion = getAdapterPosition();
+            Movie fetchMovie = movieList.get(postion);
+            onClickHandler.onClick(fetchMovie);
         }
     }
 }
