@@ -1,7 +1,9 @@
 package br.com.visetti.popularmovies.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
-import android.util.Log;
 
 import java.io.IOException;
 
@@ -10,7 +12,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class NetworkUtils {
-    private final static String TAG = NetworkUtils.class.getSimpleName();
     private final static String API_ENDPOINT = "http://api.themoviedb.org/3/movie/";
     private final static String API_KEY = "";
 
@@ -18,7 +19,6 @@ public class NetworkUtils {
         Uri uri = Uri.parse(API_ENDPOINT + queryType).buildUpon()
                 .appendQueryParameter("api_key", API_KEY)
                 .build();
-        Log.d(TAG, uri.toString());
 
         Request request = new Request.Builder().url(uri.toString())
                 .addHeader("Content-Type", "application/json")
@@ -37,5 +37,12 @@ public class NetworkUtils {
         }
 
         return jsonData;
+    }
+
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 }

@@ -26,7 +26,6 @@ import okhttp3.Request;
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
     private final String mostPopularOption = "popular";
     private final String topRatedOption = "top_rated";
-    private final String nowPlaying = "now_playing";
 
 
     private RecyclerView mMovieDisplay;
@@ -50,13 +49,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         movieAdapter = new MovieAdapter(this);
         mMovieDisplay.setAdapter(movieAdapter);
 
-        getResultFromNetwork(nowPlaying);
+        getResultFromNetwork(mostPopularOption);
 
     }
 
     private void getResultFromNetwork(String queryOption) {
-        Request movieRequest = NetworkUtils.buildMovieUrl(queryOption);
-        new MovieTask().execute(movieRequest);
+        if (NetworkUtils.isOnline(this)) {
+            Request movieRequest = NetworkUtils.buildMovieUrl(queryOption);
+            new MovieTask().execute(movieRequest);
+        } else {
+            showErrorDisplay();
+        }
     }
 
     private void showErrorDisplay() {

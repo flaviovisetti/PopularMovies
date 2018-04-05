@@ -1,7 +1,5 @@
 package br.com.visetti.popularmovies.utils;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,8 +10,6 @@ import java.util.List;
 import br.com.visetti.popularmovies.model.Movie;
 
 public class JsonUtils {
-    public final static String TAG = JsonUtils.class.getSimpleName();
-
     public static List<Movie> parseMovieJSON(String movieJSONObject) throws JSONException{
         JSONObject rawData = new JSONObject(movieJSONObject);
         JSONArray dataResults = rawData.getJSONArray("results");
@@ -23,7 +19,6 @@ public class JsonUtils {
             JSONObject movieJson = dataResults.getJSONObject(i);
             Movie movie = new Movie();
 
-            movie.setId(Long.parseLong(movieJson.getString("id")));
             movie.setTitle(movieJson.getString("title"));
             movie.setPosterPath(movieJson.getString("poster_path"));
             movie.setOverview(movieJson.getString("overview"));

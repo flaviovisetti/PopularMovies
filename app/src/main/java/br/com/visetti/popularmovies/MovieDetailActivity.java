@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,7 +12,6 @@ import com.squareup.picasso.Picasso;
 import br.com.visetti.popularmovies.model.Movie;
 
 public class MovieDetailActivity extends AppCompatActivity {
-    private final static String TAG = MovieDetailActivity.class.getSimpleName();
     private ImageView mPosterImage;
     private TextView mTitleDetail;
     private TextView mOverview;
@@ -38,9 +36,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         Picasso.get().load(movie.getPosterPath()).into(mPosterImage);
         mTitleDetail.setText(movie.getTitle());
         mOverview.setText(movie.getOverview());
-
-        Log.d(TAG, movie.getVoteAverage());
-        Log.d(TAG, movie.getReleaseData());
 
         mUserRating.setText(movie.getVoteAverage());
         mReleaseDate.setText(movie.getReleaseData());
