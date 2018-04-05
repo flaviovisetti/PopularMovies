@@ -1,6 +1,7 @@
 package br.com.visetti.popularmovies.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import br.com.visetti.popularmovies.model.Movie;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
     private List<Movie> movieList;
-    private MovieAdapterOnClickHandler onClickHandler;
+    private final MovieAdapterOnClickHandler onClickHandler;
 
     public interface MovieAdapterOnClickHandler {
         void onClick(Movie itemMovie);
@@ -31,18 +32,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         this.onClickHandler = onClickHandler;
     }
 
+    @NonNull
     @Override
-    public MovieAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.activity_movie_item, parent, false);
-        MovieAdapterViewHolder viewHolder = new MovieAdapterViewHolder(view);
 
-        return viewHolder;
+        return new MovieAdapterViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieAdapterViewHolder holder, int position) {
         Picasso.get().load(movieList.get(position).getPosterPath()).into(holder.mMoviePoster);
     }
 
@@ -53,18 +54,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     }
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private ImageView mMoviePoster;
+        private final ImageView mMoviePoster;
 
-        public MovieAdapterViewHolder(View itemView) {
+        private MovieAdapterViewHolder(View itemView) {
             super(itemView);
-            mMoviePoster = (ImageView) itemView.findViewById(R.id.iv_poster);
+            mMoviePoster = itemView.findViewById(R.id.iv_poster);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            int postion = getAdapterPosition();
-            Movie fetchMovie = movieList.get(postion);
+            int position = getAdapterPosition();
+            Movie fetchMovie = movieList.get(position);
             onClickHandler.onClick(fetchMovie);
         }
     }

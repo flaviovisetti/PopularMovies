@@ -20,10 +20,9 @@ public class NetworkUtils {
                 .appendQueryParameter("api_key", API_KEY)
                 .build();
 
-        Request request = new Request.Builder().url(uri.toString())
+        return new Request.Builder().url(uri.toString())
                 .addHeader("Content-Type", "application/json")
                 .build();
-        return request;
     }
 
     

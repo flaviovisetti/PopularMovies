@@ -12,22 +12,17 @@ import com.squareup.picasso.Picasso;
 import br.com.visetti.popularmovies.model.Movie;
 
 public class MovieDetailActivity extends AppCompatActivity {
-    private ImageView mPosterImage;
-    private TextView mTitleDetail;
-    private TextView mOverview;
-    private TextView mUserRating;
-    private TextView mReleaseDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_detail);
 
-        mPosterImage = (ImageView) findViewById(R.id.iv_detail_poster);
-        mTitleDetail = (TextView) findViewById(R.id.tv_detail_title);
-        mOverview = (TextView) findViewById(R.id.tv_detail_overview);
-        mUserRating = (TextView) findViewById(R.id.tv_detail_rating);
-        mReleaseDate = (TextView) findViewById(R.id.tv_detail_release_date);
+        ImageView mPosterImage = findViewById(R.id.iv_detail_poster);
+        TextView mTitleDetail = findViewById(R.id.tv_detail_title);
+        TextView mOverview = findViewById(R.id.tv_detail_overview);
+        TextView mUserRating = findViewById(R.id.tv_detail_rating);
+        TextView mReleaseDate = findViewById(R.id.tv_detail_release_date);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();

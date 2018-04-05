@@ -24,8 +24,8 @@ import br.com.visetti.popularmovies.utils.NetworkUtils;
 import okhttp3.Request;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
-    private final String mostPopularOption = "popular";
-    private final String topRatedOption = "top_rated";
+    private final static String POPULAR_OPTION = "popular";
+    private final static String TOP_RATED = "top_rated";
 
 
     private RecyclerView mMovieDisplay;
@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mMovieDisplay = (RecyclerView) findViewById(R.id.rv_movie_display);
-        mProgressDisplay = (ProgressBar) findViewById(R.id.pb_progress_display);
-        mErrorDisplay = (TextView) findViewById(R.id.tv_error_message);
+        mMovieDisplay = findViewById(R.id.rv_movie_display);
+        mProgressDisplay = findViewById(R.id.pb_progress_display);
+        mErrorDisplay = findViewById(R.id.tv_error_message);
 
         GridLayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 4);
         mMovieDisplay.setLayoutManager(layoutManager);
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         movieAdapter = new MovieAdapter(this);
         mMovieDisplay.setAdapter(movieAdapter);
 
-        getResultFromNetwork(mostPopularOption);
+        getResultFromNetwork(POPULAR_OPTION);
 
     }
 
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intent);
     }
 
-    public class MovieTask extends AsyncTask<Request, Void, String> {
+    private class MovieTask extends AsyncTask<Request, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -119,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     showErrorDisplay();
                     ex.printStackTrace();
                 }
-
+            } else {
+                showErrorDisplay();
             }
         }
     }
@@ -138,13 +139,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             case R.id.action_popular :
                 movieAdapter = new MovieAdapter(this);
                 mMovieDisplay.setAdapter(movieAdapter);
-                getResultFromNetwork(mostPopularOption);
+                getResultFromNetwork(POPULAR_OPTION);
                 return true;
 
             case R.id.action_top_rated :
                 movieAdapter = new MovieAdapter(this);
                 mMovieDisplay.setAdapter(movieAdapter);
-                getResultFromNetwork(topRatedOption);
+                getResultFromNetwork(TOP_RATED);
                 return true;
         }
 

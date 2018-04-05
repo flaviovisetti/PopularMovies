@@ -8,4 +8,5 @@
     <string name="display_overview">Overview:</string>
     <string name="display_release_date">Release date:</string>
     <string name="display_user_rating">User rating:</string>
+    <string name="poster_description">Poster represent the movie</string>
 </resources>
